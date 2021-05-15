@@ -8,14 +8,17 @@ typedef struct {
     const char* json;
 }lept_context;
 
+// 对输入的json字符串进行“空格”解析（为什么是static？）
 static void lept_parse_whitespace(lept_context* c) {
     const char *p = c->json;
+    // 移动字符串指针到首个不为空的字符上
     while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r')
         p++;
     c->json = p;
 }
 
 static int lept_parse_null(lept_context* c, lept_value* v) {
+    // 确保c->json字符的首个元素为n
     EXPECT(c, 'n');
     if (c->json[0] != 'u' || c->json[1] != 'l' || c->json[2] != 'l')
         return LEPT_PARSE_INVALID_VALUE;
